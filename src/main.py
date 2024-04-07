@@ -22,7 +22,6 @@ except:
 
 #%%========================= Solution analytique ==========================%%#
 
-
 x_anal, t = sol_analytique(prm)
 
 plt.plot(t,x_anal,'k-',label='Analytique, zeta = ' + str(prm.zeta))
@@ -36,6 +35,6 @@ vec_x, vec_v, vec_a, t = verlet(prm)
 plt.plot(t,vec_x,'r--',label='Verlet')
 plt.legend()
 
-L2 = f_L2(vec_x, x_anal)
-print(L2)
+L2_verlet = f_L2(vec_x, x_anal)
+print('L2 Verlet :', L2_verlet, 'pour dt =', prm.dt)
 
