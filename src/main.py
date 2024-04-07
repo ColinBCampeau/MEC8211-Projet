@@ -38,3 +38,13 @@ plt.legend()
 L2_verlet = f_L2(vec_x, x_anal)
 print('L2 Verlet :', L2_verlet, 'pour dt =', prm.dt)
 
+#%%========================= Méthode Euler Explicite ==========================%%#
+
+t_vect, x_vect, v_vect = euler(prm)
+
+plt.plot(t_vect,x_vect,'b:',label='euler explicite')
+plt.legend()
+
+L2_euler = f_L2(x_vect, x_anal)
+print('L2 Euler :', L2_euler, 'pour dt =', prm.dt)
+

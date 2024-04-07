@@ -50,7 +50,8 @@ def sol_analytique(prm):
 def verlet(prm):
     
     """
-    Fonction qui permet de calculer la solution analytique du système
+    Fonction qui permet de calculer la solution numérique du système avec la 
+    méthode de verlet
     
     Entrées:
                
@@ -103,7 +104,55 @@ def verlet(prm):
         a0 = a_dt
     
     return vec_x, vec_v, vec_a, t
+
+#%%================= FONCTION MÉTHODE EULER EXPLICITE ====================%%#
+def euler(prm):
+    
+    """
+    Fonction qui permet de calculer la solution numérique du système avec la 
+    méthode euler explicite
+    
+    Entrées:
+               
+        prm -> paramètres
         
+    Sortie:
+        
+        x_vect -> vecteur des valeurs de position pour chaque pas de temps
+        
+        v_vect -> vecteur des valeurs de vitesse pour chaque pas de temps
+        
+        t_vect -> vecteur des valeurs des pas de temps
+    
+    """ 
+       
+    x = prm.x0 # Position initiale
+    v = prm.v0 # Vitesse initiale
+
+
+    t_vect = np.arange(0,prm.t_fin+prm.dt,prm.dt) # vecteur des valeurs des pas de temps
+    x_vect = np.array([x]) # Initialisation vecteur des valeurs de position pour chaque pas de temps
+    v_vect = np.array([v]) # Initialisation vecteur des valeurs de vitesse pour chaque pas de temps
+
+    for i in range(len(t_vect)-1):
+        
+        # calcul de la position au temps t+dt
+        
+        x = x + prm.dt * v 
+        
+        # calcul de la vitesse au temps t+dt
+        
+        v = v - prm.dt * (prm.c * v + prm.k * x_vect[-1]) / prm.m
+        
+        # Stockage des résultats dans les vecteurs respectifs
+        
+        x_vect = np.append(x_vect, x)
+        
+        v_vect = np.append(v_vect, v)
+
+    return t_vect, x_vect, v_vect
+
+    
 
 #%%=========================== FONCTION ERREUR L2 ==========================%%#
 
