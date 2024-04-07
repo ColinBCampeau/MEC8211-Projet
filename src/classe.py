@@ -18,7 +18,7 @@ class prm:
     
     m = 0.1 # Masse [kg] 
     
-    c = 1 # Amortissement [N*s/m]
+    c = 0 # Amortissement [N*s/m]
     
     k = 40 # Constante de rappel [N/m]
     
@@ -37,5 +37,7 @@ class prm:
     dt = 1e-5 # Pas de temps [s]
     
     t_fin = 1 # Temps simulé [s]
+    
+    
 
     
