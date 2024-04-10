@@ -16,11 +16,11 @@ import numpy as np
 #%%===================== Classe paramètre ==========================%%#
 class prm:
     
-    m = 0.1 # Masse [kg] 
+    m = 1.9 # Masse [kg] 
     
-    c = 0 # Amortissement [N*s/m]
+    c = 11.25 # Amortissement [N*s/m]
     
-    k = 40 # Constante de rappel [N/m]
+    k = 1666 # Constante de rappel [N/m]
     
     w_n = np.sqrt(k/m) # Fréquence naturelle [Hz]
     

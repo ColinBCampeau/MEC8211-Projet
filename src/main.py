@@ -48,3 +48,7 @@ plt.legend()
 L2_euler = f_L2(x_vect, x_anal)
 print('L2 Euler :', L2_euler, 'pour dt =', prm.dt)
 
+#%%========================= Calcul de la fréquence ==========================%%#
+
+freq = frequence(vec_x)
+print('Fréquence :',freq,'Hz')

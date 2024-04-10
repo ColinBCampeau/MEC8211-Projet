@@ -180,3 +180,32 @@ def f_L2(x_num, x_anal):
 
 
 
+#%%=========================== FONCTION FRÉQUENCE ==========================%%#
+
+def frequence(vec_x):
+    
+    """
+    Fonction qui permet de calculer la fréquence de l'oscillation
+    
+    Entrés:
+        
+        vec_x -> vecteur de la position obtenue de manière numérique
+        
+    Sortie:
+        
+        freq -> fréquence d'oscillation
+    
+    """
+    
+    c = 0 
+    
+    for i in range(1,len(vec_x)-1):
+        if vec_x[i] > vec_x[i-1] and vec_x[i] > vec_x[i+1]:
+             
+            if c == 1:
+                freq = 1/(i*prm.dt-val_prec)
+                #print('Fréquence :',freq, 'Hz')
+            val_prec = i*prm.dt
+            c += 1
+    
+    return freq
