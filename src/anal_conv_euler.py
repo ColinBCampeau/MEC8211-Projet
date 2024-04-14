@@ -71,7 +71,7 @@ plt.title('Convergence d\'ordre 1\n de l\'erreur $L_2$ en fonction de $Δt$',
           fontsize=14, fontweight='bold', y=1.02)  # Le paramètre y règle la position verticale du titre
 
 plt.xlabel('Taille d\'intervalle $Δt$ [s]', fontsize=12, fontweight='bold')  
-plt.ylabel('Erreur $L_2$ [-]', fontsize=12, fontweight='bold')
+plt.ylabel('Erreur $L_2$ [m]', fontsize=12, fontweight='bold')
 
 # Rendre les axes plus gras
 plt.gca().spines['bottom'].set_linewidth(2)
@@ -97,3 +97,4 @@ plt.grid(True)
 plt.legend()
 plt.savefig("L2_euler_dt.png", dpi=300,bbox_inches='tight')
 plt.show()
+
