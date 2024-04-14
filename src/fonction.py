@@ -79,6 +79,7 @@ def verlet(prm):
     a0 = prm.a0
     
     t = np.arange(0,prm.t_fin+dt,dt)
+    # print(len(t))
 
     vec_x = np.zeros(len(t))
     vec_v = np.zeros(len(t))
@@ -209,3 +210,145 @@ def frequence(vec_x):
             c += 1
     
     return freq
+
+
+
+#%%=========================== FONCTION MHS ==========================%%#
+
+def mhs(n, val_min, val_max):
+    
+    """
+    Fonction qui permet de générer un vecteur de n valeurs aléatoire comprises entre deux valeurs
+    
+    Entrés:
+        
+        n -> taille de l'échantillon à générer
+        
+        val_min -> valeur minimale de l'échantillon
+        
+        val_max -> valeur maximale de l'échantillon
+        
+    Sortie:
+        
+        vec_rand -> vecteur de taille n contenant un échantillon aléatoire de données entre val_min et val_max
+    
+    """
+    
+    vec_rand = np.random.ran(n)*(val_max-val_min) + val_min
+    
+    return vec_rand
+
+
+
+#%%=========================== FONCTION LHS ==========================%%#
+
+def lhs(n):
+    
+    """
+    Fonction qui permet de générer un vecteur de n valeurs aléatoire comprises entre deux valeurs
+    
+    Entrés:
+        
+        n -> taille de l'échantillon à générer
+        
+    Sortie:
+        
+        points -> vecteur de taille n contenant un échantillon aléatoire de données entre val_min et val_max
+    
+    """
+    
+    limit_min = np.arange (0, n) / n
+    limit_max = np.arange (1, n+1) / n
+    points = np.random.uniform(low=limit_min, high=limit_max, size=[2,n]).T
+    np.random.shuffle(points[:, 1])
+    return points
+
+#%%=========================== FONCTION PROPAGATION ==========================%%#
+
+def incert_input(n, prm):
+    
+    """
+    Fonction qui permet de calculer l'incertitude des paramètres d'entré
+    
+    Entrés:
+        
+        n -> taille des échantillons épistémiques à générer
+        
+        prm -> paramètres
+        
+    Sortie:
+        
+        u_input -> incertitude des paramètres d'entré
+    
+    """
+    vec_freq = np.zeros(n)
+    pts_lhs = lhs(n)
+    vec_m = pts_lhs[:,0]*prm.delta_m+(prm.m-prm.delta_m)
+    vec_k = pts_lhs[:,1]*prm.delta_k+(prm.k-prm.delta_k)
+    
+    for i in range(len(vec_freq)):
+        prm.m = vec_m[i]
+        prm.k = vec_k[i]
+        vec_x, vec_v, vec_a, t = verlet(prm)
+        freq = frequence(vec_x)
+        vec_freq[i] = freq
+    
+    S_bar = sum(vec_freq)/n
+    
+    sum_LHS = 0
+    for i in range(len(vec_freq)):
+        sum_LHS += (vec_freq[i]-S_bar)**2
+    
+    u_input = np.sqrt(sum_LHS/(n-1))
+        
+    return u_input
+
+
+
+#%%=========================== FONCTION U_NUM ==========================%%#
+
+def incert_num(r, prm):
+    
+    """
+    Fonction qui permet de calculer l'incertitude numérique
+    
+    Entrés:
+        
+        r -> taux de raffinement
+        
+        prm -> paramètres
+        
+    Sortie:
+        
+        u_num -> incertitude numérique
+    
+    """
+    vec_freq = np.zeros(3)
+    dti = prm.dt
+    
+    for i in range(3):
+        dt = prm.dt
+        # print(dt)
+        vec_x, vec_v, vec_a, t = verlet(prm)
+        freq = frequence(vec_x)
+        # print(freq)
+        vec_freq[i] = freq
+        prm.dt = prm.dt*r
+    
+    prm.dt = dti    
+    
+    p_hat = np.log((abs(vec_freq[2]-vec_freq[1]))/(abs(vec_freq[1]-vec_freq[0])))/np.log(r)
+    print(p_hat)
+    val_p = abs(p_hat-1)
+    
+    if val_p > 0.1:
+        Fs = 3
+        p = min(max(0.5,p_hat),1)
+    else:
+        Fs = 1.25
+        p = 1
+    
+    GCI = Fs/(r**p-1)*abs(vec_freq[1]-vec_freq[0])
+    u_num = GCI/2
+    
+    return u_num

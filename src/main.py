@@ -52,3 +52,15 @@ print('L2 Euler :', L2_euler, 'pour dt =', prm.dt)
 
 freq = frequence(vec_x)
 print('Fréquence :',freq,'Hz')
+
+#%%========================= Calcul de u_num ==========================%%#
+
+r = 2
+u_num = incert_num(r,prm)
+print('u_num :',u_num, 'pour dt_1 =', prm.dt, 'et r =', r)
+
+#%%========================= Calcul de u_input ==========================%%#
+
+n_lhs = 100
+u_input = incert_input(n_lhs,prm)
+print('u_input :',u_input, 'pour dt =', prm.dt, 'et n_lhs =', n_lhs)

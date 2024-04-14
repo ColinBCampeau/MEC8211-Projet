@@ -26,6 +26,8 @@ class prm:
     
     zeta = c/(2*w_n*m) # Coefficient d'amortissement
     
+    # c = zeta*2*m*w_n
+    
     w_d = w_n*np.sqrt(1-zeta**2) # Fréquence amortie [Hz]
     
     x0 = 0.1 # Position initiale [m]
@@ -34,9 +36,13 @@ class prm:
     
     a0 = -1/m*(c*v0+k*x0) # Accélération initiale [m/s^2]
     
-    dt = 1e-5 # Pas de temps [s]
+    dt = 4e-5 # Pas de temps [s]
     
     t_fin = 1 # Temps simulé [s]
+    
+    delta_m = 0.05 # Incertitude expérimentale sur la masse [kg] 
+    
+    delta_k = 0.5 # Incertitude expérimentale sur la constante de rappel [N/m]
     
     
 
