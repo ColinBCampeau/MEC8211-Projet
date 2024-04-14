@@ -20,6 +20,7 @@ from scipy.stats import linregress
 import pandas as pd
 import scipy as sp
 import time
+
 try:
     from fonction import *
     from classe import *
@@ -30,7 +31,7 @@ except:
 
 #%%============= ANALYSE TEMPS DE CALCUL ===============%%#
 
-delta_t = np.array([1e-1,1e-2,1e-3,1e-4, 1e-5])
+delta_t = np.array([1e-1,1e-2,1e-3,1e-4, 1e-5, 1e-6])
 
 time_verlet = np.array([])
 
@@ -60,21 +61,16 @@ for i in range(0, len(delta_t)):
     
     time_euler = np.append(time_euler, end_time - start_time)
 
-#%% traitement des données
-
-time_verlet = np.sum(time_verlet)
-
-time_euler = np.sum(time_euler)
-
-time = np.array([time_verlet, time_euler])
+#%% generation de graph
 
 method = np.array(["Verlet", "Euler explicite"])
     
-#%% generation de graph
+for i in range(0, len(time_verlet)):
+    
+    plt.barh(method, np.array([time_verlet[i], time_euler[i]]), color=['blue', 'green'])
+    plt.xlabel(r"Temps d'exécution [s]") 
+    plt.ylabel(r"Type de méthode")
+    plt.title(r"Temps d'exécution pour $\Delta t =$" + str(delta_t[i]) +"\nen fonction des différentes méthodes utilisées")
+    plt.savefig("euler_verlet"+str(delta_t[i])+".png", dpi=300,bbox_inches='tight')
+    plt.show()
 
-plt.barh(method, time, color=['blue', 'green'])
-plt.xlabel(r"Temps d'exécution [s]") 
-plt.ylabel(r"Type de méthode")
-plt.title(r"Somme des temps d'exécution pour $\Delta t \in [1 \times 10^{-1}, 1 \times 10^{-5}]$" +"\nen fonction des différentes méthodes utilisées")
-plt.savefig("euler_verlet.png", dpi=300,bbox_inches='tight')
-plt.show()
