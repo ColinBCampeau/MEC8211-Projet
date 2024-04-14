@@ -1,11 +1,11 @@
 """
 
 PROJET MEC8211
-                            >FICHIER CLASSE<
+                            >FICHIER FONCTION<
 
 AUTEUR: EROJ MOHAMMAD ISHOQ, COLIN BISSONNETTE-CAMPEAU, TRISTAN ANCEL-SÉGUIN
 CRÉATION: 2 AVRIL 2024
-MISE À JOUR: 6 AVRIL 2024
+MISE À JOUR: 14 AVRIL 2024
 
 """
 #%%===================== IMPORTATION DES MODULES ==========================%%#
@@ -263,6 +263,9 @@ def lhs(n):
     np.random.shuffle(points[:, 1])
     return points
 
+
+
+
 #%%=========================== FONCTION PROPAGATION ==========================%%#
 
 def incert_input(n, prm):
@@ -283,8 +286,17 @@ def incert_input(n, prm):
     """
     vec_freq = np.zeros(n)
     pts_lhs = lhs(n)
-    vec_m = pts_lhs[:,0]*prm.delta_m+(prm.m-prm.delta_m)
-    vec_k = pts_lhs[:,1]*prm.delta_k+(prm.k-prm.delta_k)
+    vec_m = pts_lhs[:,0]*prm.delta_m*2+(prm.m-prm.delta_m)
+    vec_k = pts_lhs[:,1]*prm.delta_k*2+(prm.k-prm.delta_k)
+    # print(vec_m)
+    # print(vec_k)
+    
+    plt.figure
+    plt.scatter(vec_m, vec_k, c='r')
+    plt.xlabel('m [kg]')
+    plt.ylabel('k [N/m]')
+    plt.title('Paires de variables aléatoires')    
+    plt.show()
     
     for i in range(len(vec_freq)):
         prm.m = vec_m[i]
@@ -300,8 +312,9 @@ def incert_input(n, prm):
         sum_LHS += (vec_freq[i]-S_bar)**2
     
     u_input = np.sqrt(sum_LHS/(n-1))
-        
-    return u_input
+    S = np.mean(vec_freq)
+    
+    return u_input,S
 
 
 
@@ -338,7 +351,7 @@ def incert_num(r, prm):
     prm.dt = dti    
     
     p_hat = np.log((abs(vec_freq[2]-vec_freq[1]))/(abs(vec_freq[1]-vec_freq[0])))/np.log(r)
-    print(p_hat)
+    # print(p_hat)
     val_p = abs(p_hat-1)
     
     if val_p > 0.1:
@@ -349,6 +362,38 @@ def incert_num(r, prm):
         p = 1
     
     GCI = Fs/(r**p-1)*abs(vec_freq[1]-vec_freq[0])
+    # print(GCI)
     u_num = GCI/2
     
     return u_num
+
+
+#%%=========================== FONCTION U_D ==========================%%#
+
+def incert_D(prm):
+    
+    """
+    Fonction qui permet de calculer l'incertitude expériementale
+    
+    Entrés:
+        
+        prm -> paramètres
+        
+    Sortie:
+        
+        u_D -> incertitude expérimentale
+    
+    """
+    
+    bi1 = prm.err_t_reaction
+    bi2 = prm.err_t_lecture
+    
+    bi = np.sqrt(bi1*bi1+bi2*bi2)
+    
+    drdxi = (5/(1.2+bi)-5/(1.2-bi))/(2*bi)
+    
+    br = abs(drdxi*bi)
+    
+    u_D = br
+    
+    return u_D

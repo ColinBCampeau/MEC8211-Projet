@@ -1,11 +1,11 @@
 """
 
 PROJET MEC8211
-                            >FICHIER CLASSE<
+                            >FICHIER MAIN<
 
 AUTEUR: EROJ MOHAMMAD ISHOQ, COLIN BISSONNETTE-CAMPEAU, TRISTAN ANCEL-SÉGUIN
 CRÉATION: 2 AVRIL 2024
-MISE À JOUR: 6 AVRIL 2024
+MISE À JOUR: 14 AVRIL 2024
 
 """
     
@@ -24,6 +24,7 @@ except:
 
 x_anal, t = sol_analytique(prm)
 
+plt.figure
 plt.plot(t,x_anal,'k-',label='Analytique, zeta = ' + str(prm.zeta))
 
 
@@ -44,6 +45,7 @@ t_vect, x_vect, v_vect = euler(prm)
 
 plt.plot(t_vect,x_vect,'b:',label='euler explicite')
 plt.legend()
+plt.show()
 
 L2_euler = f_L2(x_vect, x_anal)
 print('L2 Euler :', L2_euler, 'pour dt =', prm.dt)
@@ -59,8 +61,14 @@ r = 2
 u_num = incert_num(r,prm)
 print('u_num :',u_num, 'pour dt_1 =', prm.dt, 'et r =', r)
 
-#%%========================= Calcul de u_input ==========================%%#
+#%%========================= Calcul de u_input et S ==========================%%#
 
 n_lhs = 100
-u_input = incert_input(n_lhs,prm)
+u_input,S = incert_input(n_lhs,prm)
 print('u_input :',u_input, 'pour dt =', prm.dt, 'et n_lhs =', n_lhs)
+print('S :',S, 'Hz')
+
+#%%========================= Calcul de u_D ==========================%%#
+
+u_D = incert_D(prm)
+print('u_D :',u_D)
