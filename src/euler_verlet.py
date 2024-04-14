@@ -74,3 +74,4 @@ for i in range(0, len(time_verlet)):
     plt.savefig("euler_verlet"+str(delta_t[i])+".png", dpi=300,bbox_inches='tight')
     plt.show()
 
+

@@ -29,7 +29,7 @@ except:
 
 #%%============= ANALYSE CONVERGENCE - TEMPORELLE ===============%%#
 
-delta_t = np.array([1e-5,1e-4,1e-3,1e-2, 1e-1])
+delta_t = np.array([1e-6, 1e-5, 1e-4,1e-3,1e-2, 1e-1])
 
 vec_l2_t = np.array([])
 
@@ -46,7 +46,7 @@ for i in range(0, len(delta_t)):
     vec_l2_t = np.append(vec_l2_t, L2_euler)
 
 # Ajuster une loi de puissance à toutes les valeurs (en utilisant np.polyfit avec logarithmes)
-coefficients = np.polyfit(np.log(delta_t[0:-2]), np.log(vec_l2_t[0:-2]), 1)
+coefficients = np.polyfit(np.log(delta_t[0:-3]), np.log(vec_l2_t[0:-3]), 1)
 exponent = coefficients[0]
 
 # Fonction de régression en termes de logarithmes
@@ -70,8 +70,8 @@ plt.plot(delta_t, fit_function(delta_t), linestyle='--', color='r', label='Régr
 plt.title('Convergence d\'ordre 1\n de l\'erreur $L_2$ en fonction de $Δt$',
           fontsize=14, fontweight='bold', y=1.02)  # Le paramètre y règle la position verticale du titre
 
-plt.xlabel('Taille d\'intervalle $Δt$ (s)', fontsize=12, fontweight='bold')  
-plt.ylabel('Erreur $L_2$ (mol/m$^3$)', fontsize=12, fontweight='bold')
+plt.xlabel('Taille d\'intervalle $Δt$ [s]', fontsize=12, fontweight='bold')  
+plt.ylabel('Erreur $L_2$ [-]', fontsize=12, fontweight='bold')
 
 # Rendre les axes plus gras
 plt.gca().spines['bottom'].set_linewidth(2)
