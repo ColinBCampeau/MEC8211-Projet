@@ -1,8 +1,8 @@
 """
 
-OUTIL NUMÉRIQUE DE SIMULATION DE LA DIFFUSION DU SEL DANS UN PILIER EN BÉTON POREUX
+OUTIL NUMÉRIQUE DE SIMULATION ...
 
-                        >FICHIER ANALYSE CONVERGENCE - COMSOL<
+            >FICHIER ANALYSE CONVERGENCE - EULER EXPLICITE<
 
 AUTEUR: EROJ MOHAMMAD ISHOQ, COLIN BISSONNETTE-CAMPEAU, TRISTAN ANCEL-SÉGUIN
 CRÉATION: 2 MARS 2024
@@ -46,7 +46,7 @@ for i in range(0, len(delta_t)):
     vec_l2_t = np.append(vec_l2_t, L2_euler)
 
 # Ajuster une loi de puissance à toutes les valeurs (en utilisant np.polyfit avec logarithmes)
-coefficients = np.polyfit(np.log(delta_t[0:-3]), np.log(vec_l2_t[0:-3]), 1)
+coefficients = np.polyfit(np.log(delta_t[0:-2]), np.log(vec_l2_t[0:-2]), 1)
 exponent = coefficients[0]
 
 # Fonction de régression en termes de logarithmes
