@@ -29,7 +29,7 @@ except:
 
 #%%============= ANALYSE CONVERGENCE - TEMPORELLE ===============%%#
 
-delta_t = np.array([1e-7,1e-6,1e-5,1e-4,1e-3,1e-2, 1e-1])
+delta_t = np.array([1e-5,1e-4,1e-3,1e-2, 1e-1])
 
 vec_l2_t = np.array([])
 
@@ -39,16 +39,14 @@ for i in range(0, len(delta_t)):
     
     x_anal, t = sol_analytique(prm)
 
-    vec_x, vec_v, vec_a, t = verlet(prm)
+    t_vect, x_vect, v_vect = euler(prm)
 
-    L2_verlet = f_L2(vec_x, x_anal)
+    L2_euler = f_L2(x_vect, x_anal)
 
-    vec_l2_t = np.append(vec_l2_t, L2_verlet)
-
-#vec_l2_t = np.array([1.128497e-7,1.128515e-6,1.1287e-5,1.1305e-4,1.14912e-3,1.3517e-2])
+    vec_l2_t = np.append(vec_l2_t, L2_euler)
 
 # Ajuster une loi de puissance à toutes les valeurs (en utilisant np.polyfit avec logarithmes)
-coefficients = np.polyfit(np.log(delta_t[0:-4]), np.log(vec_l2_t[0:-4]), 1)
+coefficients = np.polyfit(np.log(delta_t[0:-3]), np.log(vec_l2_t[0:-3]), 1)
 exponent = coefficients[0]
 
 # Fonction de régression en termes de logarithmes
@@ -97,5 +95,5 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True)
 plt.legend()
-plt.savefig("L2_verlet_dt.png", dpi=300,bbox_inches='tight')
+plt.savefig("L2_euler_dt.png", dpi=300,bbox_inches='tight')
 plt.show()
